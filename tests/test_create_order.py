@@ -1,6 +1,7 @@
 import allure
 from allure_commons.types import LabelType
 from jsonschema import validate
+
 from tests.helpers import post_request, get_schema, URL
 
 
@@ -14,12 +15,12 @@ class TestCreateOrder:
         with allure.step("Создать заказ"):
             url = URL + "/store/order"
             body = {
-              "id": 15,
-              "petId": 11,
-              "quantity": 10,
-              "shipDate": "2025-01-08T13:03:27.063+0000",
-              "status": "placed",
-              "complete": True
+                "id": 15,
+                "petId": 11,
+                "quantity": 10,
+                "shipDate": "2025-01-08T13:03:27.063+0000",
+                "status": "placed",
+                "complete": True
             }
             response = post_request(url=url, body=body)
 

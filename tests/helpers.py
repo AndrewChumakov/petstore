@@ -7,11 +7,11 @@ import requests
 from allure_commons.types import AttachmentType
 from requests import Response
 
-
 CURRENT_FILE = os.path.abspath(__file__)
 DIRECTORY = os.path.dirname(CURRENT_FILE)
 SCHEMA_DIR = os.path.join(os.path.dirname(DIRECTORY), "schemas")
 URL = "https://petstore.swagger.io/v2"
+
 
 def response_logging(response: Response):
     logging.info("Request: " + response.request.url)
@@ -20,6 +20,7 @@ def response_logging(response: Response):
     logging.info("Request headers: " + str(response.request.headers))
     logging.info("Response code " + str(response.status_code))
     logging.info("Response: " + response.text)
+
 
 def response_attaching(response: Response):
     allure.attach(
@@ -42,11 +43,13 @@ def response_attaching(response: Response):
         extension="json",
     )
 
+
 def post_request(url, body, **kwargs):
     response = requests.post(url=url, json=body, **kwargs)
     response_logging(response)
     response_attaching(response)
     return response
+
 
 def get_request(url, **kwargs):
     response = requests.get(url, **kwargs)
@@ -54,11 +57,13 @@ def get_request(url, **kwargs):
     response_attaching(response)
     return response
 
+
 def delete_request(url, **kwargs):
     response = requests.delete(url, **kwargs)
     response_logging(response)
     response_attaching(response)
     return response
+
 
 def get_schema(file_name):
     with open(os.path.join(SCHEMA_DIR, file_name)) as file:

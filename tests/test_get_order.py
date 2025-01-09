@@ -1,6 +1,7 @@
 import allure
 from allure_commons.types import LabelType
 from jsonschema import validate
+
 from tests.helpers import post_request, get_schema, delete_request, get_request, URL
 
 
@@ -21,10 +22,10 @@ class TestGetOrder:
                 "status": "placed",
                 "complete": True
             }
-            post_request(url=URL+"/store/order", body=body)
+            post_request(url=URL + "/store/order", body=body)
 
         with allure.step("Получить созданный заказ"):
-            response = get_request(url=URL+f"/store/order/{order_id}")
+            response = get_request(url=URL + f"/store/order/{order_id}")
 
         with allure.step("Проверить схему ответа"):
             validate(response.json(), get_schema("success_get_order.json"))
@@ -49,7 +50,7 @@ class TestGetOrder:
                 "status": "placed",
                 "complete": True
             }
-            post_request(url=URL+"/store/order", body=body)
+            post_request(url=URL + "/store/order", body=body)
 
         with allure.step("Удалить заказ"):
             delete_request(url=URL + f"/store/order/{order_id}")
@@ -60,7 +61,7 @@ class TestGetOrder:
             "message": "Order not found"
         }
         with allure.step("Получить удаленный заказ"):
-            response = get_request(url=URL+f"/store/order/{order_id}")
+            response = get_request(url=URL + f"/store/order/{order_id}")
 
         with allure.step("Проверить схему ответа"):
             validate(response.json(), get_schema("failure_get_order.json"))

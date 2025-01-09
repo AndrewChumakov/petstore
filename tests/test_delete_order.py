@@ -1,6 +1,7 @@
 import allure
 from allure_commons.types import LabelType
 from jsonschema import validate
+
 from tests.helpers import post_request, get_schema, delete_request, URL
 
 
@@ -21,7 +22,7 @@ class TestDeleteOrder:
                 "status": "placed",
                 "complete": True
             }
-            post_request(url=URL+"/store/order", body=body)
+            post_request(url=URL + "/store/order", body=body)
 
         expected_json = {
             "code": 200,
@@ -30,7 +31,7 @@ class TestDeleteOrder:
         }
 
         with allure.step("Удалить созданный заказ"):
-            response = delete_request(url=URL+f"/store/order/{order_id}")
+            response = delete_request(url=URL + f"/store/order/{order_id}")
 
         with allure.step("Проверить схему ответа"):
             validate(response.json(), get_schema("delete_order.json"))
@@ -55,7 +56,7 @@ class TestDeleteOrder:
                 "status": "placed",
                 "complete": True
             }
-            post_request(url=URL+"/store/order", body=body)
+            post_request(url=URL + "/store/order", body=body)
 
         with allure.step("Удалить созданный заказ"):
             delete_request(url=URL + f"/store/order/{order_id}")
@@ -66,7 +67,7 @@ class TestDeleteOrder:
             "message": "Order Not Found"
         }
         with allure.step("Удалить удаленный заказ"):
-            response = delete_request(url=URL+f"/store/order/{order_id}")
+            response = delete_request(url=URL + f"/store/order/{order_id}")
 
         with allure.step("Проверить схему ответа"):
             validate(response.json(), get_schema("delete_order.json"))
