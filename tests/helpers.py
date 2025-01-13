@@ -5,12 +5,12 @@ import os
 import allure
 import requests
 from allure_commons.types import AttachmentType
+from jsonschema import validate
 from requests import Response
 
 CURRENT_FILE = os.path.abspath(__file__)
 DIRECTORY = os.path.dirname(CURRENT_FILE)
 SCHEMA_DIR = os.path.join(os.path.dirname(DIRECTORY), "schemas")
-URL = "https://petstore.swagger.io/v2"
 
 
 def response_logging(response: Response):
@@ -68,3 +68,27 @@ def delete_request(url, **kwargs):
 def get_schema(file_name):
     with open(os.path.join(SCHEMA_DIR, file_name)) as file:
         return json.loads(file.read())
+
+@allure.step("Проверить схему ответа")
+def check_schema(response, schema):
+    validate(response.json(), get_schema(schema))
+
+@allure.step("Проверить код ответа")
+def check_code(response, code):
+    assert response.status_code == code
+
+@allure.step("Проверить тело ответа")
+def check_body(response, body):
+    assert response.json() == body
+
+@allure.step("Создать заказ")
+def create_order(url, body):
+    return post_request(url, body)
+
+@allure.step("Удалить заказ")
+def delete_order(url):
+    return delete_request(url)
+
+@allure.step("Получить заказ")
+def get_order(url):
+    return get_request(url)
